@@ -357,6 +357,11 @@
             background: #8b5cf6;
         }
 
+        .day-badge.past-night {
+            background: #a78bfa;
+            opacity: 0.7;
+        }
+
         .day.holiday .day-badge:not(.holiday-name) {
             background: #ef4444;
         }
@@ -1118,6 +1123,7 @@
             const isLeave = !isPastDate && isLeaveDay(date);
             const isToday = dateStr === todayStr;
             const isNight = !isPastDate && isNightShift(date);
+            const isPastNight = isPastDate && isNightShift(date) && !isToday; // 过去的夜班日（仅显示标识）
 
             const holidayInfo = holidays[dateStr];
             const isHoliday = holidayInfo && holidayInfo.holiday && !holidayInfo.work;
@@ -1207,6 +1213,13 @@
             else if (isNight) {
                 const badge = document.createElement('span');
                 badge.className = 'day-badge';
+                badge.textContent = '夜';
+                div.appendChild(badge);
+            }
+            // 过去的夜班日：仅显示右上角"夜"标识，不加背景
+            else if (isPastNight) {
+                const badge = document.createElement('span');
+                badge.className = 'day-badge past-night';
                 badge.textContent = '夜';
                 div.appendChild(badge);
             }
